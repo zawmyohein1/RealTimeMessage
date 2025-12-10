@@ -2,8 +2,13 @@ const statusList = document.getElementById('statusList');
 const startButton = document.getElementById('startButton');
 const logElement = document.getElementById('log');
 
+// Resolve API and SignalR endpoints from a configurable base URL.
+const serviceBaseUrl = (window.employeeServiceBaseUrl ?? '').replace(/\/$/, '') || window.location.origin;
+const processApiUrl = `${serviceBaseUrl}/api/employee/process`;
+const employeeHubUrl = `${serviceBaseUrl}/employeeStatusHub`;
+
 const connection = new signalR.HubConnectionBuilder()
-    .withUrl('/employeeStatusHub')
+    .withUrl(employeeHubUrl)
     .withAutomaticReconnect()
     .build();
 
@@ -47,7 +52,7 @@ async function startProcessing() {
     startButton.disabled = true;
     setLog('Starting processing for 100 employees...');
     try {
-        const response = await fetch('/api/employee/process', { method: 'POST' });
+        const response = await fetch(processApiUrl, { method: 'POST' });
         if (!response.ok) {
             throw new Error('Failed to start processing.');
         }
