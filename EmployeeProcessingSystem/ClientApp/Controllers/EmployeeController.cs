@@ -14,7 +14,10 @@ public class EmployeeController : Controller
     public IActionResult Index()
     {
         var baseUrl = _configuration["EmployeeService:BaseUrl"] ?? "http://localhost:5262";
+        var processApiUrl = _configuration["EmployeeService:ProcessApiUrl"] ?? $"{baseUrl.TrimEnd('/')}/api/employee/process";
+
         ViewData["EmployeeServiceBaseUrl"] = baseUrl.TrimEnd('/');
+        ViewData["EmployeeServiceProcessApiUrl"] = processApiUrl.TrimEnd('/');
 
         return View();
     }

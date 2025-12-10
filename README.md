@@ -2,9 +2,9 @@
 
 ## Employee service configuration
 
-The client app expects a single backend host that exposes both the employee processing API and the SignalR hub. Set `EmployeeService:BaseUrl` to the root of that backend (for example, `https://employee-service.example.com`). The following endpoints are derived from it:
+The client app can target distinct hosts for the process API and the SignalR hub:
 
-- `POST {BaseUrl}/api/employee/process` – starts the processing workflow.
-- `{BaseUrl}/employeeStatusHub` – SignalR hub used by the dashboard for real-time updates.
+- Set `EmployeeService:BaseUrl` to the host that serves the SignalR hub (for example, `https://employee-hub.example.com`). The hub endpoint is `{BaseUrl}/employeeStatusHub`.
+- Set `EmployeeService:ProcessApiUrl` to the fully qualified URL for the processing API (for example, `https://employee-api.example.com/api/employee/process`).
 
-Configure the base URL via `EmployeeProcessingSystem/ClientApp/appsettings.json` or the `EmployeeService__BaseUrl` environment variable when deploying.
+Both values can be configured in `EmployeeProcessingSystem/ClientApp/appsettings.json` or via environment variables (`EmployeeService__BaseUrl` and `EmployeeService__ProcessApiUrl`).

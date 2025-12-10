@@ -105,8 +105,12 @@
         }
     </script>
     <script>
-        // Provide the base URL for the employee processing backend (API + SignalR hub).
-        window.employeeServiceBaseUrl = '@ViewData["EmployeeServiceBaseUrl"]';
+        // Provide the base URL for the SignalR hub and a separately configurable process API URL.
+        const configuredBaseUrl = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(ViewData["EmployeeServiceBaseUrl"] ?? ""));
+        const configuredProcessApiUrl = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(ViewData["EmployeeServiceProcessApiUrl"] ?? ""));
+
+        window.employeeServiceBaseUrl = (configuredBaseUrl || window.location.origin).replace(/\/$/, '');
+        window.employeeProcessApiUrl = (configuredProcessApiUrl || `${window.location.origin}/api/employee/process`).replace(/\/$/, '');
     </script>
     <script src="/js/employeeStatus.js"></script>
 </body>

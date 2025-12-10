@@ -2,9 +2,9 @@ const statusList = document.getElementById('statusList');
 const startButton = document.getElementById('startButton');
 const logElement = document.getElementById('log');
 
-// Resolve API and SignalR endpoints from a configurable base URL.
+// Resolve API and SignalR endpoints from configurable sources (API URL can differ from hub base).
 const serviceBaseUrl = (window.employeeServiceBaseUrl ?? '').replace(/\/$/, '') || window.location.origin;
-const processApiUrl = `${serviceBaseUrl}/api/employee/process`;
+const processApiUrl = (window.employeeProcessApiUrl ?? `${serviceBaseUrl}/api/employee/process`).replace(/\/$/, '');
 const employeeHubUrl = `${serviceBaseUrl}/employeeStatusHub`;
 
 function setLog(message) {
