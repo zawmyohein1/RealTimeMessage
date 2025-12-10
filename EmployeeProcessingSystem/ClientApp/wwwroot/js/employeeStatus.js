@@ -7,6 +7,17 @@ const serviceBaseUrl = (window.employeeServiceBaseUrl ?? '').replace(/\/$/, '') 
 const processApiUrl = `${serviceBaseUrl}/api/employee/process`;
 const employeeHubUrl = `${serviceBaseUrl}/employeeStatusHub`;
 
+function setLog(message) {
+    const timestamp = new Date().toLocaleTimeString();
+    logElement.textContent = `[${timestamp}] ${message}`;
+}
+
+if (!window.signalR) {
+    setLog('Unable to load SignalR client library. Please check your network connection.');
+    startButton.disabled = true;
+    throw new Error('SignalR client library is unavailable.');
+}
+
 const connection = new signalR.HubConnectionBuilder()
     .withUrl(employeeHubUrl)
     .withAutomaticReconnect()
@@ -62,11 +73,6 @@ async function startProcessing() {
         setLog('Unable to start processing. Please try again.');
         startButton.disabled = false;
     }
-}
-
-function setLog(message) {
-    const timestamp = new Date().toLocaleTimeString();
-    logElement.textContent = `[${timestamp}] ${message}`;
 }
 
 startConnection();
