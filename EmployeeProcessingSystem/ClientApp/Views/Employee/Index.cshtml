@@ -1,0 +1,103 @@
+@{
+    ViewData["Title"] = "Employee Processing";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" integrity="sha512-NhSC1YmyruXifcj/KFRWoC7Xz3sJLX0Cem58kL2R9S7FA1sCw3tymm9H7to0Pcf8hY7l+HU4NQm+AbWLaOHUyg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        body {
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            margin: 24px;
+            background: #f6f8fb;
+            color: #1f2933;
+        }
+
+        h1 {
+            margin-bottom: 8px;
+        }
+
+        #controls {
+            margin: 16px 0;
+        }
+
+        #statusList {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 12px;
+        }
+
+        .status-card {
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+            padding: 12px;
+            border-left: 4px solid #3b82f6;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .status-card.done {
+            border-left-color: #16a34a;
+        }
+
+        .status-card.processing {
+            border-left-color: #f59e0b;
+        }
+
+        .status-label {
+            font-weight: 600;
+        }
+
+        .status-text {
+            text-transform: capitalize;
+            color: #475467;
+        }
+
+        button {
+            background: #2563eb;
+            border: none;
+            color: #fff;
+            padding: 10px 18px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 15px;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.12);
+        }
+
+        button:disabled {
+            background: #9ca3af;
+            cursor: not-allowed;
+        }
+
+        #log {
+            margin-top: 16px;
+            color: #6b7280;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Employee Processing Dashboard</h1>
+    <p>Track employee processing in real time without page reloads.</p>
+
+    <div id="controls">
+        <button id="startButton" onclick="startProcessing()">Start Processing</button>
+    </div>
+
+    <ul id="statusList" aria-live="polite" aria-label="Employee status updates"></ul>
+
+    <div id="log"></div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/8.0.0/signalr.min.js" integrity="sha512-h7eZUMUzHQS7ZCrYxYGh9Ui98ovg+nM2UOjSdGIMnrA4FyVpmDHgG5a8VTa8CqWPwZgtSlhAqkCl7Sm7q9miRg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="/js/employeeStatus.js"></script>
+</body>
+</html>
