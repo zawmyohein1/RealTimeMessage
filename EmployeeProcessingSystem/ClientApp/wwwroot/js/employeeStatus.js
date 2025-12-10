@@ -2,8 +2,24 @@ const statusList = document.getElementById('statusList');
 const startButton = document.getElementById('startButton');
 const logElement = document.getElementById('log');
 
+// Resolve API and SignalR endpoints from configurable sources (API URL can differ from hub base).
+const serviceBaseUrl = (window.employeeServiceBaseUrl ?? '').replace(/\/$/, '') || window.location.origin;
+const processApiUrl = (window.employeeProcessApiUrl ?? `${serviceBaseUrl}/api/employee/process`).replace(/\/$/, '');
+const employeeHubUrl = `${serviceBaseUrl}/employeeStatusHub`;
+
+function setLog(message) {
+    const timestamp = new Date().toLocaleTimeString();
+    logElement.textContent = `[${timestamp}] ${message}`;
+}
+
+if (!window.signalR) {
+    setLog('Unable to load SignalR client library. Please check your network connection.');
+    startButton.disabled = true;
+    throw new Error('SignalR client library is unavailable.');
+}
+
 const connection = new signalR.HubConnectionBuilder()
-    .withUrl('/employeeStatusHub')
+    .withUrl(employeeHubUrl)
     .withAutomaticReconnect()
     .build();
 
@@ -47,7 +63,7 @@ async function startProcessing() {
     startButton.disabled = true;
     setLog('Starting processing for 100 employees...');
     try {
-        const response = await fetch('/api/employee/process', { method: 'POST' });
+        const response = await fetch(processApiUrl, { method: 'POST' });
         if (!response.ok) {
             throw new Error('Failed to start processing.');
         }
@@ -57,11 +73,6 @@ async function startProcessing() {
         setLog('Unable to start processing. Please try again.');
         startButton.disabled = false;
     }
-}
-
-function setLog(message) {
-    const timestamp = new Date().toLocaleTimeString();
-    logElement.textContent = `[${timestamp}] ${message}`;
 }
 
 startConnection();

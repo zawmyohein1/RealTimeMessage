@@ -7,4 +7,11 @@ namespace SignalRService.Hubs;
 /// </summary>
 public class EmployeeStatusHub : Hub
 {
+    /// <summary>
+    /// Allows trusted services to fan out status updates to connected clients.
+    /// </summary>
+    public async Task ForwardStatusUpdate(int employeeId, string status, CancellationToken cancellationToken)
+    {
+        await Clients.All.SendAsync("ReceiveStatusUpdate", employeeId, status, cancellationToken);
+    }
 }
