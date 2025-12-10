@@ -98,6 +98,20 @@
     <div id="log"></div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/8.0.0/signalr.min.js" integrity="sha512-h7eZUMUzHQS7ZCrYxYGh9Ui98ovg+nM2UOjSdGIMnrA4FyVpmDHgG5a8VTa8CqWPwZgtSlhAqkCl7Sm7q9miRg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script>
+        // Fallback to a locally hosted SignalR bundle when the CDN is unreachable.
+        if (!window.signalR) {
+            document.write('<script src="/lib/signalr/signalr.min.js"><\\/script>');
+        }
+    </script>
+    <script>
+        // Provide the base URL for the SignalR hub and a separately configurable process API URL.
+        const configuredBaseUrl = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(ViewData["EmployeeServiceBaseUrl"] ?? ""));
+        const configuredProcessApiUrl = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(ViewData["EmployeeServiceProcessApiUrl"] ?? ""));
+
+        window.employeeServiceBaseUrl = (configuredBaseUrl || window.location.origin).replace(/\/$/, '');
+        window.employeeProcessApiUrl = (configuredProcessApiUrl || `${window.location.origin}/api/employee/process`).replace(/\/$/, '');
+    </script>
     <script src="/js/employeeStatus.js"></script>
 </body>
 </html>
