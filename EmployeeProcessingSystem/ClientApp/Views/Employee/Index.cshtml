@@ -100,7 +100,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/8.0.0/signalr.min.js" integrity="sha512-h7eZUMUzHQS7ZCrYxYGh9Ui98ovg+nM2UOjSdGIMnrA4FyVpmDHgG5a8VTa8CqWPwZgtSlhAqkCl7Sm7q9miRg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script>
         // Provide the base URL for the employee processing backend (API + SignalR hub).
-        window.employeeServiceBaseUrl = "@(Environment.GetEnvironmentVariable("EMPLOYEE_SERVICE_BASE_URL") ?? "http://localhost:5262")";
+        window.employeeServiceBaseUrl = '@ViewData["EmployeeServiceBaseUrl"]';
+
     </script>
     <script src="/js/employeeStatus.js"></script>
 </body>
